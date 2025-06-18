@@ -1,0 +1,167 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .nist-box { fill: #2E5BBA; stroke: #1a365d; stroke-width: 2; }
+      .mitre-box { fill: #C53030; stroke: #742a2a; stroke-width: 2; }
+      .function-box { fill: #38B2AC; stroke: #2c7a7b; stroke-width: 2; }
+      .title-text { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: white; text-anchor: middle; }
+      .control-text { font-family: Arial, sans-serif; font-size: 11px; fill: white; text-anchor: middle; }
+      .technique-text { font-family: Arial, sans-serif; font-size: 11px; fill: white; text-anchor: middle; }
+      .mapping-line { stroke: #4A5568; stroke-width: 2; opacity: 0.7; }
+      .header-text { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #2D3748; text-anchor: middle; }
+      .legend-text { font-family: Arial, sans-serif; font-size: 12px; fill: #2D3748; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="600" y="30" class="header-text">NIST CSF 2.0 to MITRE ATT&CK Mapping</text>
+  <text x="600" y="50" class="legend-text" text-anchor="middle">Initial Access • Lateral Movement • Privilege Escalation</text>
+  
+  <!-- NIST CSF 2.0 Side -->
+  <text x="150" y="90" class="header-text" style="font-size: 18px;">NIST CSF 2.0 Controls</text>
+  
+  <!-- GOVERN Function -->
+  <rect x="20" y="110" width="280" height="40" class="function-box" rx="5"/>
+  <text x="160" y="135" class="title-text">GOVERN (GV)</text>
+  
+  <!-- GOVERN Controls -->
+  <rect x="30" y="160" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="90" y="180" class="control-text">GV.SC-01</text>
+  <rect x="170" y="160" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="230" y="180" class="control-text">GV.OC-02</text>
+  
+  <!-- IDENTIFY Function -->
+  <rect x="20" y="210" width="280" height="40" class="function-box" rx="5"/>
+  <text x="160" y="235" class="title-text">IDENTIFY (ID)</text>
+  
+  <!-- IDENTIFY Controls -->
+  <rect x="30" y="260" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="90" y="280" class="control-text">ID.RA-01</text>
+  <rect x="170" y="260" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="230" y="280" class="control-text">ID.AM-02</text>
+  
+  <!-- PROTECT Function -->
+  <rect x="20" y="310" width="280" height="40" class="function-box" rx="5"/>
+  <text x="160" y="335" class="title-text">PROTECT (PR)</text>
+  
+  <!-- PROTECT Controls -->
+  <rect x="30" y="360" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="90" y="380" class="control-text">PR.AA-01</text>
+  <rect x="170" y="360" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="230" y="380" class="control-text">PR.AT-01</text>
+  <rect x="30" y="400" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="90" y="420" class="control-text">PR.PS-02</text>
+  <rect x="170" y="400" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="230" y="420" class="control-text">PR.IR-01</text>
+  
+  <!-- DETECT Function -->
+  <rect x="20" y="450" width="280" height="40" class="function-box" rx="5"/>
+  <text x="160" y="475" class="title-text">DETECT (DE)</text>
+  
+  <!-- DETECT Controls -->
+  <rect x="30" y="500" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="90" y="520" class="control-text">DE.CM-01</text>
+  <rect x="170" y="500" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="230" y="520" class="control-text">DE.AE-02</text>
+  
+  <!-- RESPOND Function -->
+  <rect x="20" y="550" width="280" height="40" class="function-box" rx="5"/>
+  <text x="160" y="575" class="title-text">RESPOND (RS)</text>
+  
+  <!-- RESPOND Controls -->
+  <rect x="30" y="600" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="90" y="620" class="control-text">RS.AN-03</text>
+  <rect x="170" y="600" width="120" height="30" class="nist-box" rx="3"/>
+  <text x="230" y="620" class="control-text">RS.MA-01</text>
+  
+  <!-- MITRE ATT&CK Side -->
+  <text x="1050" y="90" class="header-text" style="font-size: 18px;">MITRE ATT&CK Techniques</text>
+  
+  <!-- Initial Access (TA0001) -->
+  <rect x="900" y="110" width="280" height="40" class="function-box" rx="5"/>
+  <text x="1040" y="135" class="title-text">Initial Access (TA0001)</text>
+  
+  <!-- Initial Access Techniques -->
+  <rect x="910" y="160" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="970" y="180" class="technique-text">T1566 Phishing</text>
+  <rect x="1050" y="160" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="1110" y="180" class="technique-text">T1190 Exploit</text>
+  <rect x="910" y="200" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="970" y="220" class="technique-text">T1078 Valid Accts</text>
+  <rect x="1050" y="200" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="1110" y="220" class="technique-text">T1195 Supply Chain</text>
+  
+  <!-- Lateral Movement (TA0008) -->
+  <rect x="900" y="260" width="280" height="40" class="function-box" rx="5"/>
+  <text x="1040" y="285" class="title-text">Lateral Movement (TA0008)</text>
+  
+  <!-- Lateral Movement Techniques -->
+  <rect x="910" y="310" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="970" y="330" class="technique-text">T1021 Remote Svc</text>
+  <rect x="1050" y="310" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="1110" y="330" class="technique-text">T1570 Tool Transfer</text>
+  <rect x="910" y="350" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="970" y="370" class="technique-text">T1563 Session Hijack</text>
+  <rect x="1050" y="350" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="1110" y="370" class="technique-text">T1534 Int Phishing</text>
+  
+  <!-- Privilege Escalation (TA0004) -->
+  <rect x="900" y="410" width="280" height="40" class="function-box" rx="5"/>
+  <text x="1040" y="435" class="title-text">Privilege Escalation (TA0004)</text>
+  
+  <!-- Privilege Escalation Techniques -->
+  <rect x="910" y="460" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="970" y="480" class="technique-text">T1068 Exploit PrivEsc</text>
+  <rect x="1050" y="460" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="1110" y="480" class="technique-text">T1548 Abuse Elev</text>
+  <rect x="910" y="500" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="970" y="520" class="technique-text">T1134 Token Manip</text>
+  <rect x="1050" y="500" width="120" height="30" class="mitre-box" rx="3"/>
+  <text x="1110" y="520" class="technique-text">T1078 Valid Accts</text>
+  
+  <!-- Mapping Lines -->
+  <!-- Phishing to Training -->
+  <line x1="230" y1="380" x2="910" y2="175" class="mapping-line"/>
+  
+  <!-- Supply Chain to GV.SC-01 -->
+  <line x1="150" y1="175" x2="1050" y2="215" class="mapping-line"/>
+  
+  <!-- Valid Accounts to PR.AA-01 -->
+  <line x1="150" y1="380" x2="910" y2="215" class="mapping-line"/>
+  
+  <!-- Exploit to ID.RA-01 -->
+  <line x1="150" y1="280" x2="1050" y2="175" class="mapping-line"/>
+  
+  <!-- Remote Services to PR.IR-01 -->
+  <line x1="290" y1="420" x2="910" y2="325" class="mapping-line"/>
+  
+  <!-- Tool Transfer to DE.CM-01 -->
+  <line x1="150" y1="520" x2="1050" y2="325" class="mapping-line"/>
+  
+  <!-- Privilege Escalation to PR.PS-02 -->
+  <line x1="150" y1="420" x2="910" y2="475" class="mapping-line"/>
+  
+  <!-- Token Manipulation to PR.AA-01 -->
+  <line x1="150" y1="380" x2="910" y2="515" class="mapping-line"/>
+  
+  <!-- Legend -->
+  <rect x="400" y="650" width="400" height="120" fill="none" stroke="#4A5568" stroke-width="1" rx="5"/>
+  <text x="600" y="675" class="legend-text" text-anchor="middle" font-weight="bold">Legend</text>
+  
+  <rect x="420" y="690" width="20" height="15" class="nist-box"/>
+  <text x="450" y="702" class="legend-text">NIST CSF 2.0 Controls</text>
+  
+  <rect x="420" y="715" width="20" height="15" class="mitre-box"/>
+  <text x="450" y="727" class="legend-text">MITRE ATT&CK Techniques</text>
+  
+  <rect x="420" y="740" width="20" height="15" class="function-box"/>
+  <text x="450" y="752" class="legend-text">Framework Functions/Tactics</text>
+  
+  <line x1="600" y1="690" x2="650" y2="690" class="mapping-line"/>
+  <text x="660" y="695" class="legend-text">Control-to-Technique Mapping</text>
+  
+  <!-- Key Mappings Description -->
+  <text x="420" y="710" class="legend-text" style="font-size: 10px;">Key: PR.AA = Identity & Access, PR.AT = Training, DE.CM = Monitoring</text>
+  <text x="600" y="725" class="legend-text" style="font-size: 10px;">GV.SC = Supply Chain, ID.RA = Risk Assessment</text>
+  
+</svg>

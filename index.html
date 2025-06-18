@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST CSF 2.0 to MITRE ATT&CK Mapping</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .main-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        
+        .mapping-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+        
+        .framework-section {
+            position: relative;
+        }
+        
+        .framework-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .nist-title {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .mitre-title {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .function-group {
+            margin-bottom: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .function-header {
+            padding: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: white;
+            text-align: center;
+        }
+        
+        .nist-function {
+            background: linear-gradient(135deg, #16a085, #1abc9c);
+        }
+        
+        .mitre-tactic {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        }
+        
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        .control-item, .technique-item {
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9em;
+            font-weight: 500;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .control-item:hover, .technique-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .nist-control {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+        }
+        
+        .mitre-technique {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+        
+        .legend {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .legend-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .key-mappings {
+            margin-top: 30px;
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .mapping-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+        
+        .mapping-example {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .arrow {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .mapping-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-title {
+                font-size: 2em;
+            }
+        }
+        
+        /* Lightbox Styles */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .lightbox-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .control-category {
+            margin-bottom: 20px;
+        }
+        
+        .category-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        
+        .controls-list {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .control {
+            font-size: 0.9em;
+            color: #333;
+            padding: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="main-title">NIST CSF 2.0 ↔ MITRE ATT&CK Mapping</h1>
+            <p class="subtitle">Defensive Controls vs. Adversary Techniques</p>
+            <p class="subtitle"><strong>Focus Areas:</strong> Initial Access • Lateral Movement • Privilege Escalation</p>
+        </div>
+        
+        <div class="mapping-container">
+            <!-- NIST CSF 2.0 Side -->
+            <div class="framework-section">
+                <div class="framework-title nist-title">
+                    🛡️ NIST CSF 2.0 Controls
+                </div>
+                
+                <div class="function-group">
+                    <div class="function-header nist-function">GOVERN (GV)</div>
+                    <div class="controls-grid">
+                        <div class="control-item nist-control">GV.SC-01<br><small>Supply Chain Program</small></div>
+                        <div class="control-item nist-control">GV.OC-02<br><small>Stakeholder Expectations</small></div>
+                        <div class="control-item nist-control">GV.RM-06<br><small>Risk Calculation Method</small></div>
+                        <div class="control-item nist-control">GV.RR-02<br><small>Roles & Responsibilities</small></div>
+                    </div>
+                </div>
+                
+                <div class="function-group">
+                    <div class="function-header nist-function">IDENTIFY (ID)</div>
+                    <div class="controls-grid">
+                        <div class="control-item nist-control">ID.RA-01<br><small>Vulnerability Identification</small></div>
+                        <div class="control-item nist-control">ID.AM-02<br><small>Software Inventory</small></div>
+                        <div class="control-item nist-control">ID.RA-10<br><small>Supplier Assessment</small></div>
+                        <div class="control-item nist-control">ID.RA-02<br><small>Threat Intelligence</small></div>
+                    </div>
+                </div>
+                
+                <div class="function-group">
+                    <div class="function-header nist-function">PROTECT (PR)</div>
+                    <div class="controls-grid">
+                        <div class="control-item nist-control">PR.AA-01<br><small>Identity Management</small></div>
+                        <div class="control-item nist-control">PR.AT-01<br><small>Security Awareness</small></div>
+                        <div class="control-item nist-control">PR.PS-02<br><small>Software Maintenance</small></div>
+                        <div class="control-item nist-control">PR.IR-01<br><small>Network Protection</small></div>
+                    </div>
+                </div>
+                
+                <div class="function-group">
+                    <div class="function-header nist-function">DETECT (DE)</div>
+                    <div class="controls-grid">
+                        <div class="control-item nist-control">DE.CM-01<br><small>Network Monitoring</small></div>
+                        <div class="control-item nist-control">DE.AE-02<br><small>Event Analysis</small></div>
+                        <div class="control-item nist-control">DE.CM-03<br><small>Personnel Monitoring</small></div>
+                        <div class="control-item nist-control">DE.AE-07<br><small>Threat Intelligence</small></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MITRE ATT&CK Side -->
+            <div class="framework-section">
+                <div class="framework-title mitre-title">
+                    ⚔️ MITRE ATT&CK Techniques
+                </div>
+                
+                <div class="function-group">
+                    <div class="function-header mitre-tactic">Initial Access (TA0001)</div>
+                    <div class="controls-grid">
+                        <div class="technique-item mitre-technique">T1566<br><small>Phishing</small></div>
+                        <div class="technique-item mitre-technique">T1190<br><small>Exploit Public-Facing App</small></div>
+                        <div class="technique-item mitre-technique">T1078<br><small>Valid Accounts</small></div>
+                        <div class="technique-item mitre-technique">T1195<br><small>Supply Chain Compromise</small></div>
+                    </div>
+                </div>
+                
+                <div class="function-group">
+                    <div class="function-header mitre-tactic">Lateral Movement (TA0008)</div>
+                    <div class="controls-grid">
+                        <div class="technique-item mitre-technique">T1021<br><small>Remote Services</small></div>
+                        <div class="technique-item mitre-technique">T1570<br><small>Lateral Tool Transfer</small></div>
+                        <div class="technique-item mitre-technique">T1563<br><small>Remote Session Hijack</small></div>
+                        <div class="technique-item mitre-technique">T1534<br><small>Internal Spearphishing</small></div>
+                    </div>
+                </div>
+                
+                <div class="function-group">
+                    <div class="function-header mitre-tactic">Privilege Escalation (TA0004)</div>
+                    <div class="controls-grid">
+                        <div class="technique-item mitre-technique">T1068<br><small>Exploitation for PrivEsc</small></div>
+                        <div class="technique-item mitre-technique">T1548<br><small>Abuse Elevation Control</small></div>
+                        <div class="technique-item mitre-technique">T1134<br><small>Access Token Manipulation</small></div>
+                        <div class="technique-item mitre-technique">T1078<br><small>Valid Accounts</small></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <h3 class="legend-title">Framework Legend & Key Mappings</h3>
+            
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #16a085, #1abc9c);"></div>
+                    <span>NIST CSF 2.0 Functions</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #8e44ad, #9b59b6);"></div>
+                    <span>MITRE ATT&CK Tactics</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #2980b9, #3498db);"></div>
+                    <span>NIST Controls</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: linear-gradient(135deg, #c0392b, #e74c3c);"></div>
+                    <span>MITRE Techniques</span>
+                </div>
+            </div>
+            
+            <div class="key-mappings">
+                <div class="mapping-title">🔗 Key Control-to-Technique Mappings</div>
+                <div class="mapping-example">
+                    <strong>PR.AT-01 (Security Awareness)</strong> <span class="arrow">→</span> <strong>T1566 (Phishing)</strong>
+                    <br><small>Employee training directly counters social engineering attacks</small>
+                </div>
+                <div class="mapping-example">
+                    <strong>GV.SC-01 (Supply Chain Program)</strong> <span class="arrow">→</span> <strong>T1195 (Supply Chain Compromise)</strong>
+                    <br><small>Governance controls address third-party risks</small>
+                </div>
+                <div class="mapping-example">
+                    <strong>PR.AA-01 (Identity Management)</strong> <span class="arrow">→</span> <strong>T1078 (Valid Accounts)</strong>
+                    <br><small>Access controls prevent credential abuse</small>
+                </div>
+                <div class="mapping-example">
+                    <strong>ID.RA-01 (Vulnerability ID)</strong> <span class="arrow">→</span> <strong>T1068 (Exploitation)</strong>
+                    <br><small>Proactive vulnerability management prevents exploitation</small>
+                </div>
+                <div class="mapping-example">
+                    <strong>DE.CM-01 (Network Monitoring)</strong> <span class="arrow">→</span> <strong>T1021 (Remote Services)</strong>
+                    <br><small>Continuous monitoring detects lateral movement</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Lightbox for NIST Controls -->
+    <div id="controls-lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="close-button" id="close-lightbox">&times;</span>
+            <h3 class="lightbox-title" id="lightbox-title">NIST Controls</h3>
+            <div id="lightbox-content"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Lightbox Functionality -->
+    <script>
+        // Control data for the Govern section
+        const governControls = {
+            "GV.SC-01": {
+                title: "Supply Chain Program",
+                category: "Supply Chain Risk Management",
+                controls: [
+                    "Vendor security assessment procedures",
+                    "Third-party risk scoring matrix",
+                    "Supplier security requirements documentation",
+                    "Supply chain incident response plan",
+                    "Vendor monitoring and compliance verification"
+                ]
+            },
+            "GV.OC-02": {
+                title: "Stakeholder Expectations",
+                category: "Governance Policies",
+                controls: [
+                    "Stakeholder communication plan",
+                    "Security policy acknowledgement process",
+                    "Regulatory compliance reporting",
+                    "Executive briefing templates",
+                    "Risk acceptance criteria documentation"
+                ]
+            },
+            "GV.RM-06": {
+                title: "Risk Calculation Method",
+                category: "Risk Management",
+                controls: [
+                    "Risk assessment methodology",
+                    "Risk scoring criteria",
+                    "Risk register template",
+                    "Risk treatment options documentation",
+                    "Risk prioritization framework"
+                ]
+            },
+            "GV.RR-02": {
+                title: "Roles & Responsibilities",
+                category: "Roles and Responsibilities",
+                controls: [
+                    "RACI matrix for security functions",
+                    "Job descriptions with security responsibilities",
+                    "Security committee charter",
+                    "Delegation of authority documentation",
+                    "Separation of duties controls"
+                ]
+            }
+        };
+
+        // Control data for the IDENTIFY section
+        const identifyControls = {
+            "ID.RA-01": {
+                title: "Vulnerability Identification",
+                category: "Risk Assessment",
+                controls: [
+                    "Automated vulnerability scanning tools",
+                    "Penetration testing program and schedule",
+                    "Asset vulnerability classification system",
+                    "Vulnerability tracking and remediation process",
+                    "Threat modeling for critical applications"
+                ]
+            },
+            "ID.AM-02": {
+                title: "Software Inventory",
+                category: "Asset Management",
+                controls: [
+                    "Automated software inventory tools",
+                    "Software license management system",
+                    "Baseline configuration documentation",
+                    "Software approval and whitelisting process",
+                    "Shadow IT detection mechanisms"
+                ]
+            },
+            "ID.RA-10": {
+                title: "Supplier Assessment",
+                category: "Supply Chain Risk Management",
+                controls: [
+                    "Supplier risk assessment methodology",
+                    "Third-party security questionnaires",
+                    "Supplier security compliance requirements",
+                    "Regular supplier security reviews",
+                    "Fourth-party risk identification process"
+                ]
+            },
+            "ID.RA-02": {
+                title: "Threat Intelligence",
+                category: "Risk Assessment",
+                controls: [
+                    "Threat intelligence platform integration",
+                    "Industry-specific threat data sources",
+                    "Threat actor profiling and tracking",
+                    "Tactical and strategic intelligence reports",
+                    "Threat hunting procedures based on intelligence"
+                ]
+            }
+        };
+
+        // Control data for the PROTECT section
+        const protectControls = {
+            "PR.AA-01": {
+                title: "Identity Management",
+                category: "Authentication & Authorization",
+                controls: [
+                    "Multi-factor authentication implementation",
+                    "Privileged access management solution",
+                    "Role-based access control framework",
+                    "Just-in-time access provisioning",
+                    "Regular access review and certification process"
+                ]
+            },
+            "PR.AT-01": {
+                title: "Security Awareness",
+                category: "Awareness & Training",
+                controls: [
+                    "Phishing simulation program",
+                    "Role-based security training curriculum",
+                    "Compliance awareness modules",
+                    "Interactive security awareness sessions",
+                    "Training effectiveness measurement metrics"
+                ]
+            },
+            "PR.PS-02": {
+                title: "Software Maintenance",
+                category: "Protective Technology",
+                controls: [
+                    "Automated patch management system",
+                    "Vulnerability remediation prioritization framework",
+                    "Pre-deployment security testing procedures",
+                    "Legacy system security maintenance plan",
+                    "Emergency patch deployment process"
+                ]
+            },
+            "PR.IR-01": {
+                title: "Network Protection",
+                category: "Information Protection",
+                controls: [
+                    "Next-generation firewall implementation",
+                    "Network segmentation architecture",
+                    "Zero-trust network access model",
+                    "Data loss prevention system",
+                    "Encrypted network communications"
+                ]
+            }
+        };
+
+        // Control data for the DETECT section
+        const detectControls = {
+            "DE.CM-01": {
+                title: "Network Monitoring",
+                category: "Security Continuous Monitoring",
+                controls: [
+                    "Network traffic analysis systems",
+                    "Intrusion detection/prevention systems",
+                    "NetFlow data collection and analysis",
+                    "Deep packet inspection at security boundaries",
+                    "Encrypted traffic analysis capabilities"
+                ]
+            },
+            "DE.AE-02": {
+                title: "Event Analysis",
+                category: "Anomalies and Events",
+                controls: [
+                    "Security information and event management (SIEM)",
+                    "User and entity behavior analytics (UEBA)",
+                    "Baseline deviation alerting mechanisms",
+                    "Correlation rules for complex attack detection",
+                    "Security orchestration and automated response"
+                ]
+            },
+            "DE.CM-03": {
+                title: "Personnel Monitoring",
+                category: "Security Continuous Monitoring",
+                controls: [
+                    "Privileged user activity monitoring",
+                    "Data access auditing systems",
+                    "Insider threat detection program",
+                    "Account usage anomaly detection",
+                    "Administrative action logging and review"
+                ]
+            },
+            "DE.AE-07": {
+                title: "Threat Intelligence",
+                category: "Anomalies and Events",
+                controls: [
+                    "Automated indicator of compromise matching",
+                    "Threat intelligence platform for correlation",
+                    "Known bad IP/domain filtering",
+                    "Adversary tactics and techniques monitoring",
+                    "Emerging threat detection capabilities"
+                ]
+            }
+        };
+
+        // MITRE ATT&CK Technique data for Initial Access
+        const initialAccessTechniques = {
+            "T1566": {
+                title: "Phishing",
+                category: "Initial Access Vector",
+                techniques: [
+                    "Spearphishing Attachment - Malicious files attached to emails",
+                    "Spearphishing Link - Malicious links embedded in emails",
+                    "Spearphishing via Service - Phishing through third-party services",
+                    "Business Email Compromise - Impersonation of executives",
+                    "Email forwarding rules and inbox monitoring"
+                ]
+            },
+            "T1190": {
+                title: "Exploit Public-Facing Application",
+                category: "External Vulnerability Exploitation",
+                techniques: [
+                    "Web application vulnerabilities (SQLi, XSS, RFI)",
+                    "Zero-day exploitation of internet-facing services",
+                    "API endpoint exploitation and abuse",
+                    "Vulnerable server components and outdated software",
+                    "Insecure configuration of public services"
+                ]
+            },
+            "T1078": {
+                title: "Valid Accounts",
+                category: "Credential-Based Access",
+                techniques: [
+                    "Default credentials in systems and applications",
+                    "Compromised credentials from data breaches",
+                    "Local accounts with excessive privileges",
+                    "Domain accounts with broad network access",
+                    "Cloud service account compromise and abuse"
+                ]
+            },
+            "T1195": {
+                title: "Supply Chain Compromise",
+                category: "Third-Party Vector",
+                techniques: [
+                    "Software supply chain attacks (code repositories)",
+                    "Hardware or firmware interdiction",
+                    "Compromised software update/distribution channels",
+                    "Vendor website compromise to deliver malware",
+                    "Targeting of managed service providers (MSPs)"
+                ]
+            }
+        };
+
+        // Control data for Lateral Movement techniques
+        const lateralMovementTechniques = {
+            "T1021": {
+                title: "Remote Services",
+                category: "Lateral Movement",
+                techniques: [
+                    "Remote Desktop Protocol (RDP) exploitation",
+                    "SSH hijacking and exploitation",
+                    "Exploitation of remote management tools",
+                    "VPN exploitation for network access",
+                    "Abuse of legitimate remote access software"
+                ]
+            },
+            "T1570": {
+                title: "Lateral Tool Transfer",
+                category: "Lateral Movement",
+                techniques: [
+                    "File transfer via RDP clipboard",
+                    "PowerShell Remoting for tool execution",
+                    "WMI commands for remote execution",
+                    "PsExec for remote command execution",
+                    "Abuse of SMB/NetBIOS for file sharing"
+                ]
+            },
+            "T1563": {
+                title: "Remote Session Hijacking",
+                category: "Lateral Movement",
+                techniques: [
+                    "Session fixation attacks",
+                    "Cross-site scripting (XSS) to steal sessions",
+                    "Exploitation of insecure session management",
+                    "Session replay attacks",
+                    "Malicious browser extensions for session hijacking"
+                ]
+            },
+            "T1534": {
+                title: "Internal Spearphishing",
+                category: "Lateral Movement",
+                techniques: [
+                    "Spearphishing emails with malicious links",
+                    "Malicious attachments in internal emails",
+                    "Exploitation of internal trust relationships",
+                    "Abuse of legitimate email forwarding",
+                    "Credential harvesting via phishing"
+                ]
+            }
+        };
+
+        // MITRE ATT&CK Technique data for Privilege Escalation
+        const privilegeEscalationTechniques = {
+            "T1068": {
+                title: "Exploitation for Privilege Escalation",
+                category: "Vulnerability Exploitation",
+                techniques: [
+                    "Local kernel vulnerability exploitation",
+                    "Unpatched service exploitation for higher privileges",
+                    "Memory corruption in privileged processes",
+                    "Race condition exploitation in system processes",
+                    "Exploitation of misconfigured setuid/setgid binaries"
+                ]
+            },
+            "T1548": {
+                title: "Abuse Elevation Control Mechanism",
+                category: "Authorization Bypass",
+                techniques: [
+                    "Bypass User Account Control (UAC) in Windows",
+                    "Sudo mechanism abuse in Linux environments",
+                    "Web application privilege escalation via CSRF/XSS",
+                    "Exploitation of trusted browser/application permissions",
+                    "Process token cloning or manipulation"
+                ]
+            },
+            "T1134": {
+                title: "Access Token Manipulation",
+                category: "Identity Abuse",
+                techniques: [
+                    "Token impersonation for elevated privileges",
+                    "Parent process ID (PPID) spoofing",
+                    "Duplicating access tokens from privileged processes",
+                    "SID-History injection for domain privilege escalation",
+                    "Creating tokens with elevated privileges"
+                ]
+            },
+            "T1078": {
+                title: "Valid Accounts",
+                category: "Credential Abuse",
+                techniques: [
+                    "Administrator account compromise",
+                    "Service account privilege abuse",
+                    "Default admin credentials in applications",
+                    "Cloud service role elevation",
+                    "Exploitation of excessive user privileges"
+                ]
+            }
+        };
+
+        // Get all control and technique items
+        const controlItems = document.querySelectorAll('.nist-control');
+        const techniqueItems = document.querySelectorAll('.mitre-technique');
+        const lightbox = document.getElementById('controls-lightbox');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxContent = document.getElementById('lightbox-content');
+        const closeButton = document.getElementById('close-lightbox');
+
+        // Add click event to each control item
+        controlItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Extract the control ID from the HTML
+                const controlText = this.innerHTML;
+                const controlId = controlText.split('<br>')[0];
+                
+                // Handle Govern controls
+                if (controlId.startsWith('GV.')) {
+                    const controlData = governControls[controlId];
+                    
+                    if (controlData) {
+                        // Set the lightbox title
+                        lightboxTitle.textContent = `${controlId} - ${controlData.title}`;
+                        
+                        // Generate content for the lightbox
+                        let contentHTML = `
+                            <div class="control-category">
+                                <div class="category-name">${controlData.category}</div>
+                                <div class="controls-list">
+                        `;
+                        
+                        // Add each control to the content
+                        controlData.controls.forEach(control => {
+                            contentHTML += `<div class="control">${control}</div>`;
+                        });
+                        
+                        contentHTML += `
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Set the content and show the lightbox
+                        lightboxContent.innerHTML = contentHTML;
+                        lightbox.classList.add('active');
+                    }
+                }
+                // Handle Identify controls
+                else if (controlId.startsWith('ID.')) {
+                    const controlData = identifyControls[controlId];
+                    
+                    if (controlData) {
+                        // Set the lightbox title
+                        lightboxTitle.textContent = `${controlId} - ${controlData.title}`;
+                        
+                        // Generate content for the lightbox
+                        let contentHTML = `
+                            <div class="control-category">
+                                <div class="category-name">${controlData.category}</div>
+                                <div class="controls-list">
+                        `;
+                        
+                        // Add each control to the content
+                        controlData.controls.forEach(control => {
+                            contentHTML += `<div class="control">${control}</div>`;
+                        });
+                        
+                        contentHTML += `
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add related MITRE techniques section
+                        contentHTML += `
+                            <div class="control-category">
+                                <div class="category-name">Related MITRE Techniques</div>
+                                <div class="controls-list">
+                        `;
+                        
+                        // Add related MITRE techniques based on the control
+                        if (controlId === "ID.RA-01") {
+                            contentHTML += `
+                                <div class="control">T1190 - Exploit Public-Facing Application</div>
+                                <div class="control">T1068 - Exploitation for Privilege Escalation</div>
+                                <div class="control">T1562 - Impair Defenses</div>
+                            `;
+                        } else if (controlId === "ID.AM-02") {
+                            contentHTML += `
+                                <div class="control">T1078 - Valid Accounts</div>
+                                <div class="control">T1195 - Supply Chain Compromise</div>
+                                <div class="control">T1072 - Software Deployment Tools</div>
+                            `;
+                        } else if (controlId === "ID.RA-10") {
+                            contentHTML += `
+                                <div class="control">T1195 - Supply Chain Compromise</div>
+                                <div class="control">T1133 - External Remote Services</div>
+                                <div class="control">T1199 - Trusted Relationship</div>
+                            `;
+                        } else if (controlId === "ID.RA-02") {
+                            contentHTML += `
+                                <div class="control">T1566 - Phishing</div>
+                                <div class="control">T1190 - Exploit Public-Facing Application</div>
+                                <div class="control">T1189 - Drive-by Compromise</div>
+                            `;
+                        }
+                        
+                        contentHTML += `
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Set the content and show the lightbox
+                        lightboxContent.innerHTML = contentHTML;
+                        lightbox.classList.add('active');
+                    }
+                }
+                // Handle Protect controls
+                else if (controlId.startsWith('PR.')) {
+                    const controlData = protectControls[controlId];
+                    
+                    if (controlData) {
+                        // Set the lightbox title
+                        lightboxTitle.textContent = `${controlId} - ${controlData.title}`;
+                        
+                        // Generate content for the lightbox
+                        let contentHTML = `
+                            <div class="control-category">
+                                <div class="category-name">${controlData.category}</div>
+                                <div class="controls-list">
+                        `;
+                        
+                        // Add each control to the content
+                        controlData.controls.forEach(control => {
+                            contentHTML += `<div class="control">${control}</div>`;
+                        });
+                        
+                        contentHTML += `
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add related MITRE techniques section
+                        contentHTML += `
+                            <div class="control-category">
+                                <div class="category-name">Related MITRE Techniques</div>
+                                <div class="controls-list">
+                        `;
+                        
+                        // Add related MITRE techniques based on the control
+                        if (controlId === "PR.AA-01") {
+                            contentHTML += `
+                                <div class="control">T1078 - Valid Accounts</div>
+                                <div class="control">T1021 - Remote Services</div>
+                                <div class="control">T1534 - Internal Spearphishing</div>
+                                <div class="control">T1548 - Abuse Elevation Control</div>
+                            `;
+                        } else if (controlId === "PR.AT-01") {
+                            contentHTML += `
+                                <div class="control">T1566 - Phishing</div>
+                                <div class="control">T1534 - Internal Spearphishing</div>
+                                <div class="control">T1563 - Remote Session Hijacking</div>
+                                <div class="control">T1195 - Supply Chain Compromise</div>
+                            `;
+                        } else if (controlId === "PR.PS-02") {
+                            contentHTML += `
+                                <div class="control">T1190 - Exploit Public-Facing Application</div>
+                                <div class="control">T1068 - Exploitation for Privilege Escalation</div>
+                                <div class="control">T1195 - Supply Chain Compromise</div>
+                                <div class="control">T1134 - Access Token Manipulation</div>
+                            `;
+                        } else if (controlId === "PR.IR-01") {
+                            contentHTML += `
+                                <div class="control">T1021 - Remote Services</div>
+                                <div class="control">T1570 - Lateral Tool Transfer</div>
+                                <div class="control">T1078 - Valid Accounts</div>
+                                <div class="control">T1566 - Phishing</div>
+                            `;
+                        }
+                        
+                        contentHTML += `
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Set the content and show the lightbox
+                        lightboxContent.innerHTML = contentHTML;
+                        lightbox.classList.add('active');
+                    }
+                }
+                // Handle Detect controls
+                else if (controlId.startsWith('DE.')) {
+                    const controlData = detectControls[controlId];
+                    
+                    if (controlData) {
+                        // Set the lightbox title
+                        lightboxTitle.textContent = `${controlId} - ${controlData.title}`;
+                        
+                        // Generate content for the lightbox
+                        let contentHTML = `
+                            <div class="control-category">
+                                <div class="category-name">${controlData.category}</div>
+                                <div class="controls-list">
+                        `;
+                        
+                        // Add each control to the content
+                        controlData.controls.forEach(control => {
+                            contentHTML += `<div class="control">${control}</div>`;
+                        });
+                        
+                        contentHTML += `
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add related MITRE techniques section
+                        contentHTML += `
+                            <div class="control-category">
+                                <div class="category-name">Related MITRE Techniques</div>
+                                <div class="controls-list">
+                        `;
+                        
+                        // Add related MITRE techniques based on the control
+                        if (controlId === "DE.CM-01") {
+                            contentHTML += `
+                                <div class="control">T1021 - Remote Services</div>
+                                <div class="control">T1570 - Lateral Tool Transfer</div>
+                                <div class="control">T1190 - Exploit Public-Facing Application</div>
+                                <div class="control">T1566 - Phishing</div>
+                            `;
+                        } else if (controlId === "DE.AE-02") {
+                            contentHTML += `
+                                <div class="control">T1021 - Remote Services (unusual login patterns)</div>
+                                <div class="control">T1570 - Lateral Tool Transfer (unusual file movements)</div>
+                                <div class="control">T1534 - Internal Spearphishing (unusual email patterns)</div>
+                                <div class="control">T1078 - Valid Accounts (unusual account usage)</div>
+                            `;
+                        } else if (controlId === "DE.CM-03") {
+                            contentHTML += `
+                                <div class="control">T1078 - Valid Accounts</div>
+                                <div class="control">T1548 - Abuse Elevation Control Mechanism</div>
+                                <div class="control">T1563 - Remote Session Hijacking</div>
+                                <div class="control">T1134 - Access Token Manipulation</div>
+                            `;
+                        } else if (controlId === "DE.AE-07") {
+                            contentHTML += `
+                                <div class="control">T1566 - Phishing (known campaigns)</div>
+                                <div class="control">T1068 - Exploitation for Privilege Escalation (known vulnerabilities)</div>
+                                <div class="control">T1195 - Supply Chain Compromise (known compromised suppliers)</div>
+                                <div class="control">T1563 - Remote Session Hijacking (known attack patterns)</div>
+                            `;
+                        }
+                        
+                        contentHTML += `
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Set the content and show the lightbox
+                        lightboxContent.innerHTML = contentHTML;
+                        lightbox.classList.add('active');
+                    }
+                }
+            });
+        });
+
+        // Add click event to each technique item
+        techniqueItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Extract the technique ID from the HTML
+                const techniqueText = this.innerHTML;
+                const techniqueId = techniqueText.split('<br>')[0];
+                
+                // Handle Initial Access techniques
+                if (initialAccessTechniques[techniqueId]) {
+                    const techniqueData = initialAccessTechniques[techniqueId];
+                    
+                    // Set the lightbox title
+                    lightboxTitle.textContent = `${techniqueId} - ${techniqueData.title}`;
+                    
+                    // Generate content for the lightbox
+                    let contentHTML = `
+                        <div class="control-category">
+                            <div class="category-name">${techniqueData.category}</div>
+                            <div class="controls-list">
+                    `;
+                    
+                    // Add each technique detail to the content
+                    techniqueData.techniques.forEach(technique => {
+                        contentHTML += `<div class="control">${technique}</div>`;
+                    });
+                    
+                    contentHTML += `
+                            </div>
+                        </div>
+                        <div class="control-category">
+                            <div class="category-name">Relevant NIST Controls</div>
+                            <div class="controls-list">
+                    `;
+                    
+                    // Add relevant NIST controls based on technique
+                    if (techniqueId === "T1566") { // Phishing
+                        contentHTML += `
+                            <div class="control">PR.AT-01 - Security awareness training</div>
+                            <div class="control">DE.CM-01 - Network monitoring for suspicious emails</div>
+                            <div class="control">PR.IR-01 - Email filtering and protection</div>
+                            <div class="control">ID.RA-02 - Threat intelligence</div>
+                        `;
+                    } else if (techniqueId === "T1190") { // Exploit Public-Facing App
+                        contentHTML += `
+                            <div class="control">ID.RA-01 - Vulnerability identification</div>
+                            <div class="control">PR.PS-02 - Software maintenance and patching</div>
+                            <div class="control">DE.CM-01 - Network monitoring</div>
+                            <div class="control">ID.RA-02 - Threat intelligence</div>
+                        `;
+                    } else if (techniqueId === "T1078") { // Valid Accounts
+                        contentHTML += `
+                            <div class="control">PR.AA-01 - Identity management</div>
+                            <div class="control">DE.CM-03 - Personnel monitoring</div>
+                            <div class="control">ID.AM-02 - Software inventory that includes accounts</div>
+                        `;
+                    } else if (techniqueId === "T1195") { // Supply Chain Compromise
+                        contentHTML += `
+                            <div class="control">GV.SC-01 - Supply chain program</div>
+                            <div class="control">ID.RA-10 - Supplier assessment</div>
+                            <div class="control">GV.RM-06 - Risk calculation method</div>
+                            <div class="control">ID.AM-02 - Software inventory</div>
+                        `;
+                    }
+                    
+                    contentHTML += `
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Set the content and show the lightbox
+                    lightboxContent.innerHTML = contentHTML;
+                    lightbox.classList.add('active');
+                }
+                // Handle Lateral Movement techniques
+                else if (lateralMovementTechniques[techniqueId]) {
+                    const techniqueData = lateralMovementTechniques[techniqueId];
+                    
+                    // Set the lightbox title
+                    lightboxTitle.textContent = `${techniqueId} - ${techniqueData.title}`;
+                    
+                    // Generate content for the lightbox
+                    let contentHTML = `
+                        <div class="control-category">
+                            <div class="category-name">${techniqueData.category}</div>
+                            <div class="controls-list">
+                    `;
+                    
+                    // Add each technique detail to the content
+                    techniqueData.techniques.forEach(technique => {
+                        contentHTML += `<div class="control">${technique}</div>`;
+                    });
+                    
+                    contentHTML += `
+                            </div>
+                        </div>
+                        <div class="control-category">
+                            <div class="category-name">Relevant NIST Controls</div>
+                            <div class="controls-list">
+                    `;
+                    
+                    // Add relevant NIST controls based on technique
+                    if (techniqueId === "T1021") { // Remote Services
+                        contentHTML += `
+                            <div class="control">PR.AA-01 - Identity management for service accounts</div>
+                            <div class="control">DE.CM-01 - Network monitoring for unauthorized connections</div>
+                            <div class="control">PR.PS-02 - Secure configuration of remote services</div>
+                            <div class="control">DE.AE-02 - Event analysis of unusual logins</div>
+                        `;
+                    } else if (techniqueId === "T1570") { // Lateral Tool Transfer
+                        contentHTML += `
+                            <div class="control">DE.CM-01 - Network monitoring for unusual file transfers</div>
+                            <div class="control">PR.IR-01 - Network segmentation</div>
+                            <div class="control">DE.AE-02 - Event analysis of unauthorized data movements</div>
+                            <div class="control">PR.AA-01 - Least privilege access to file systems</div>
+                        `;
+                    } else if (techniqueId === "T1563") { // Remote Session Hijacking
+                        contentHTML += `
+                            <div class="control">PR.AA-01 - Session timeout and management</div>
+                            <div class="control">DE.CM-03 - User behavior monitoring</div>
+                            <div class="control">PR.AT-01 - Security awareness of session protection</div>
+                            <div class="control">DE.AE-07 - Threat intelligence on hijacking techniques</div>
+                        `;
+                    } else if (techniqueId === "T1534") { // Internal Spearphishing
+                        contentHTML += `
+                            <div class="control">PR.AT-01 - Security awareness of internal threats</div>
+                            <div class="control">DE.CM-01 - Email monitoring for internal threats</div>
+                            <div class="control">DE.AE-02 - Event analysis of unusual email patterns</div>
+                            <div class="control">ID.RA-02 - Threat intelligence on internal attacks</div>
+                        `;
+                    }
+                    
+                    contentHTML += `
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Set the content and show the lightbox
+                    lightboxContent.innerHTML = contentHTML;
+                    lightbox.classList.add('active');
+                }
+                // Handle Privilege Escalation techniques
+                else if (privilegeEscalationTechniques[techniqueId]) {
+                    const techniqueData = privilegeEscalationTechniques[techniqueId];
+                    
+                    // Set the lightbox title
+                    lightboxTitle.textContent = `${techniqueId} - ${techniqueData.title}`;
+                    
+                    // Generate content for the lightbox
+                    let contentHTML = `
+                        <div class="control-category">
+                            <div class="category-name">${techniqueData.category}</div>
+                            <div class="controls-list">
+                    `;
+                    
+                    // Add each technique detail to the content
+                    techniqueData.techniques.forEach(technique => {
+                        contentHTML += `<div class="control">${technique}</div>`;
+                    });
+                    
+                    contentHTML += `
+                            </div>
+                        </div>
+                        <div class="control-category">
+                            <div class="category-name">Relevant NIST Controls</div>
+                            <div class="controls-list">
+                    `;
+                    
+                    // Add relevant NIST controls based on technique
+                    if (techniqueId === "T1068") { // Exploitation for PrivEsc
+                        contentHTML += `
+                            <div class="control">ID.RA-01 - Vulnerability identification & patching</div>
+                            <div class="control">PR.PS-02 - Software maintenance and updates</div>
+                            <div class="control">PR.IR-01 - Network protection measures</div>
+                            <div class="control">DE.CM-01 - System monitoring for exploitation</div>
+                        `;
+                    } else if (techniqueId === "T1548") { // Abuse Elevation Control
+                        contentHTML += `
+                            <div class="control">PR.AA-01 - Identity and access management</div>
+                            <div class="control">PR.PS-02 - Secure system configuration</div>
+                            <div class="control">DE.CM-03 - Personnel activity monitoring</div>
+                            <div class="control">GV.RR-02 - Roles & responsibilities for system privileges</div>
+                        `;
+                    } else if (techniqueId === "T1134") { // Access Token Manipulation
+                        contentHTML += `
+                            <div class="control">PR.AA-01 - Identity management and token protection</div>
+                            <div class="control">DE.CM-01 - Token usage monitoring</div>
+                            <div class="control">PR.PS-02 - Security configuration of token handling</div>
+                            <div class="control">ID.RA-02 - Threat intelligence on token attacks</div>
+                        `;
+                    } else if (techniqueId === "T1078") { // Valid Accounts
+                        contentHTML += `
+                            <div class="control">PR.AA-01 - Identity management and least privilege</div>
+                            <div class="control">DE.CM-03 - Administrative account monitoring</div>
+                            <div class="control">GV.RR-02 - Privileged access management procedures</div>
+                            <div class="control">PR.AT-01 - Security awareness for admins</div>
+                        `;
+                    }
+                    
+                    contentHTML += `
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Set the content and show the lightbox
+                    lightboxContent.innerHTML = contentHTML;
+                    lightbox.classList.add('active');
+                }
+            });
+        });
+
+        // Close lightbox when clicking the close button
+        closeButton.addEventListener('click', function() {
+            lightbox.classList.remove('active');
+        });
+
+        // Close lightbox when clicking outside the content
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+            }
+        });
+        
+        // Close lightbox when pressing Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
