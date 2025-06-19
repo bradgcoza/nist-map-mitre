@@ -797,6 +797,49 @@
                             </div>
                         `;
                         
+                        // Add related MITRE techniques section
+                        contentHTML += `
+                            <div class="control-category">
+                                <div class="category-name">Related MITRE Techniques</div>
+                                <div class="controls-list">
+                        `;
+                        
+                        // Add related MITRE techniques based on the control
+                        if (controlId === "GV.SC-01") {
+                            contentHTML += `
+                                <div class="control">T1195 - Supply Chain Compromise</div>
+                                <div class="control">T1199 - Trusted Relationship</div>
+                                <div class="control">T1078 - Valid Accounts (via third parties)</div>
+                                <div class="control">T1583 - Acquire Infrastructure (compromised suppliers)</div>
+                            `;
+                        } else if (controlId === "GV.OC-02") {
+                            contentHTML += `
+                                <div class="control">T1566 - Phishing (targeting specific stakeholders)</div>
+                                <div class="control">T1078 - Valid Accounts (due to inadequate policies)</div>
+                                <div class="control">T1484 - Domain Policy Modification</div>
+                                <div class="control">T1562 - Impair Defenses (exploiting policy gaps)</div>
+                            `;
+                        } else if (controlId === "GV.RM-06") {
+                            contentHTML += `
+                                <div class="control">T1195 - Supply Chain Compromise (risk calculation failures)</div>
+                                <div class="control">T1190 - Exploit Public-Facing Application (risk prioritization)</div>
+                                <div class="control">T1499 - Endpoint Denial of Service (availability risks)</div>
+                                <div class="control">T1562 - Impair Defenses (missed security controls)</div>
+                            `;
+                        } else if (controlId === "GV.RR-02") {
+                            contentHTML += `
+                                <div class="control">T1078 - Valid Accounts (excessive privileges)</div>
+                                <div class="control">T1548 - Abuse Elevation Control Mechanism</div>
+                                <div class="control">T1134 - Access Token Manipulation</div>
+                                <div class="control">T1068 - Exploitation for Privilege Escalation</div>
+                            `;
+                        }
+                        
+                        contentHTML += `
+                                </div>
+                            </div>
+                        `;
+                        
                         // Set the content and show the lightbox
                         lightboxContent.innerHTML = contentHTML;
                         lightbox.classList.add('active');
